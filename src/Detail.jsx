@@ -105,7 +105,6 @@ class Detail extends Component {
                   <div>
                     <Link
                       to="/violin"
-                      variant="danger"
                       // onClick={this.routeChange(this.state.id)}
                       onClick={() => this.deleteItem(this.state.id)}
                     >
