@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Button, Row, Col, Modal, Form } from "react-bootstrap";
 import { addMain, addProduct } from "../Publics/Action";
+import Axios from "axios";
 
 import { connect } from "react-redux";
 
@@ -14,12 +15,13 @@ class modalAdd extends Component {
         description: ""
       },
       formMain: {
-        id_product: "" || "2",
+        id_product: "" || "4",
         id_branch: "",
         qty: "",
         price: "",
         img: "/sub/violin4"
       },
+
       resModal: false
     };
   }
@@ -51,18 +53,25 @@ class modalAdd extends Component {
   handleSubmit = async e => {
     e.preventDefault();
     await this.props.dispatch(addProduct(this.state.formProduct));
+
+    // let getMax = Axios.get(`http://localhost:8080/product/max`);
+    // let LastIndex = getMax.data.data[0]["MAX(id)"];
+    // this.setState({ id_product: LastIndex });
+
+    let getMax = await Axios.get(`http://localhost:8080/product/max`);
+    let LastIndex = getMax.data.data[0]["MAX(id)"];
+    this.setState({ id_product: LastIndex });
     await this.props.dispatch(addMain(this.state.formMain));
-    // this.props.hide();
-    // this.resModalShow(true);
-    // setTimeout(() => {
-    //   this.resModalShow(false);
-    // }, 3000);
+
+    this.props.hide();
   };
+
+  getIdProduct = () => {};
 
   render() {
     console.log("Data Form Main : ", this.state.formMain);
     console.log("Data Form Product : ", this.state.formProduct);
-    console.log("Data prodmax : ", this.props.dataProdMax);
+    console.log("Data Form id : ", this.state.id_product);
     return (
       <Modal
         size="lg"
@@ -99,6 +108,9 @@ class modalAdd extends Component {
                   name="id_category"
                   onChange={this.handleChangeProduct}
                 >
+                  <option selected disabled>
+                    Category..
+                  </option>
                   {this.props.dataCategory.length > 0 ? (
                     this.props.dataCategory.map(category => (
                       <option value={category.id}>{category.name}</option>
@@ -119,6 +131,9 @@ class modalAdd extends Component {
                   name="id_branch"
                   onChange={this.handleChangeMain}
                 >
+                  <option selected disabled>
+                    Branch..
+                  </option>
                   {this.props.dataBranch.length > 0 ? (
                     this.props.dataBranch.map(branch => (
                       <option value={branch.id}>{branch.name}</option>

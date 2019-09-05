@@ -11,6 +11,7 @@ import {
 
 class SearchBar extends Component {
   state = { search: "" };
+
   render() {
     console.log("mamank search : ", this.state.search);
     return (

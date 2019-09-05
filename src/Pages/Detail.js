@@ -9,10 +9,15 @@ import {
   Form,
   Button
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 import { connect } from "react-redux";
-import { getMainDetail, deleteMain } from "../Publics/Action";
+import {
+  getMainDetail,
+  getCategory,
+  getProduct,
+  deleteMain
+} from "../Publics/Action";
 import ModalEdit from "../components/modalEdit";
 
 class Detail extends Component {
@@ -21,12 +26,16 @@ class Detail extends Component {
     this.state = {
       id_detail: this.props.match.params.id,
       openModalEdit: false,
-      dataStore: []
+      dataStore: [],
+      dataCategory: [],
+      dataProduct: []
     };
   }
 
   componentDidMount = async () => {
     await this.props.dispatch(getMainDetail(this.state.id_detail));
+    await this.props.dispatch(getCategory());
+    await this.props.dispatch(getProduct());
     this.setState({
       dataStore: this.props.data.Mains.mainList[0]
     });
@@ -77,15 +86,14 @@ class Detail extends Component {
                     </Button>
                   </div>
                   <div>
-                    <Link
-                      to="/violin"
-                      // onClick={this.routeChange(this.state.id)}
+                    <a
+                      href="/violin"
                       onClick={() => this.DeleteMain(this.state.id_detail)}
                     >
                       <Button variant="danger" size="sm" className="mr-sm-2">
                         Delete
                       </Button>
-                    </Link>
+                    </a>
                   </div>
                 </Form>
               </Navbar>

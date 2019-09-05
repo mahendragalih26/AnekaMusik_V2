@@ -62,7 +62,7 @@ export const getProductMax = () => {
 
 export const addProduct = data => {
   return {
-    type: "ADD_MAIN",
+    type: "ADD_PRODUCTS",
     payload: Axios.post(`http://localhost:8080/product`, data)
   };
 };
